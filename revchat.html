@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rivals - Medieval Western Board Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="./cover page.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="indexstyle.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        :root {
+            --wine: #722F37;
+            --beige: #F5F5DC;
+            --light-beige: #FAF9F6;
+            --dark-wine: #5A252A;
+        }
+        
+        body {
+            background-color: var(--beige);
+            color: var(--wine);
+            font-family: 'Georgia', serif;
+        }
+        
+        .wine-text {
+            color: var(--wine);
+        }
+        
+        .wine-border {
+            border-color: var(--wine);
+        }
+        
+        .wine-bg {
+            background-color: var(--wine);
+            color: var(--beige);
+        }
+        
+        .glass-effect {
+            background: rgba(250, 249, 246, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(114, 47, 55, 0.2);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(114, 47, 55, 0.15);
+        }
+        
+        .chat-bubble {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .typing-indicator span {
+            height: 4px;
+            width: 4px;
+            background-color: var(--wine);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 1px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        .review-card {
+            background: linear-gradient(135deg, var(--light-beige) 0%, var(--beige) 100%);
+            border: 1px solid rgba(114, 47, 55, 0.1);
+        }
+        
+        .nav-tab {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--wine);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-tab.active::before {
+            width: 100%;
+        }
+        .logo-img {
+  width: 90px;
+  height: auto;
+  right: 10px;
+  position: relative;
+  display: block;
+}
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+     <a href="index.html" >
+<img src="./back-button.png" class="logo-img" alt="Back Button"></a>
+    <!-- Reviews Page -->
+    <div id="reviews-page" class="max-w-6xl mx-auto p-6">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold mb-4 wine-text">Game Reviews</h2>
+            <p class="text-lg opacity-80">Share your thoughts and read what others think</p>
+        </div>
+
+        <!-- Review Form -->
+        <div class="glass-effect rounded-lg p-6 mb-8 hover-lift">
+            <h3 class="text-xl font-semibold mb-4 wine-text">Write a Review</h3>
+            <form id="review-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2 wine-text">Your Name</label>
+                    <input type="text" id="reviewer-name" required class="w-full px-3 py-2 border wine-border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-wine">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 wine-text">Rating</label>
+                  <div id="star-rating" class="flex space-x-1 mb-4">
+    <span class="star text-2xl cursor-pointer" onclick="setRating(1)">★</span>
+    <span class="star text-2xl cursor-pointer" onclick="setRating(2)">★</span>
+    <span class="star text-2xl cursor-pointer" onclick="setRating(3)">★</span>
+    <span class="star text-2xl cursor-pointer" onclick="setRating(4)">★</span>
+    <span class="star text-2xl cursor-pointer" onclick="setRating(5)">★</span>
+</div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 wine-text">Your Review</label>
+                    <textarea id="review-text" rows="4" required class="w-full px-3 py-2 border wine-border rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-wine" placeholder="Share your experience..."></textarea>
+                </div>
+                <button type="submit" class="wine-bg px-6 py-2 rounded-md hover:opacity-90 transition font-semibold">
+                    Post Review
+                </button>
+            </form>
+        </div>
+
+        <!-- Reviews List -->
+        <div id="reviews-container" class="space-y-4">
+           
+
+    <!-- Notification -->
+    <div id="notification" class="notification glass-effect rounded-lg">
+        <div class="flex items-center space-x-2">
+            <i data-lucide="bell" class="w-5 h-5 wine-text"></i>
+            <span id="notification-text" class="text-sm wine-text">New message received!</span>
+        </div>
+    </div>
+<script>
+let currentRating = 0;
+
+// Set rating stars
+function setRating(rating) {
+    currentRating = rating;
+    const stars = document.querySelectorAll('#star-rating .star');
+    stars.forEach((star, index) => {
+        star.classList.toggle('text-yellow-500', index < rating);
+    });
+}
+
+// Save reviews to localStorage
+function saveReviews(reviews) {
+    localStorage.setItem('reviews', JSON.stringify(reviews));
+}
+
+// Toggle Like
+function likeReview(button, index) {
+    const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+    const review = reviews[index];
+    const count = button.querySelector('span');
+
+    if (!review) return;
+
+    if (review.liked) {
+        review.likes--;
+        review.liked = false;
+        button.classList.remove('liked', 'text-red-500');
+    } else {
+        review.likes++;
+        review.liked = true;
+        button.classList.add('liked', 'text-red-500');
+    }
+
+    count.textContent = review.likes;
+    saveReviews(reviews);
+}
+
+// Render review
+function renderReview(review, index) {
+    const container = document.getElementById('reviews-container');
+
+    const likedClass = review.liked ? 'liked text-red-500' : '';
+    const reviewDiv = document.createElement('div');
+    reviewDiv.className = 'p-4 border rounded-md mb-3 bg-white shadow';
+
+    reviewDiv.innerHTML = `
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="font-bold">${review.name}</h4>
+                <div class="text-yellow-500">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                <p class="text-gray-700 mt-2">${review.text}</p>
+                <small class="text-gray-500">${review.timestamp}</small>
+            </div>
+            <button onclick="likeReview(this, ${index})" class="flex items-center gap-1 ${likedClass}">
+                👍 <span>${review.likes}</span>
+            </button>
+        </div>
+    `;
+
+    container.prepend(reviewDiv);
+}
+
+// Show notification
+// Show notification
+function showNotification(text) {
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notification-text');
+    notificationText.textContent = text;
+    notification.classList.add('show');
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+// On page load, render saved reviews
+window.addEventListener('DOMContentLoaded', () => {
+    const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+    const container = document.getElementById('reviews-container');
+    container.innerHTML = ''; // clear any existing
+
+    savedReviews.forEach((review, index) => {
+        renderReview(review, index);
+    });
+});
+
+// Handle review form submit
+document.getElementById('review-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('reviewer-name').value;
+    const text = document.getElementById('review-text').value;
+
+    if (currentRating === 0) {
+        alert('Please select a rating');
+        return;
+    }
+
+    const newReview = {
+        name,
+        text,
+        rating: currentRating,
+        likes: 0,
+        liked: false,
+        timestamp: new Date().toLocaleString()
+    };
+
+    const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+    savedReviews.push(newReview);
+    saveReviews(savedReviews);
+
+    renderReview(newReview, savedReviews.length - 1);
+
+    document.getElementById('review-form').reset();
+    setRating(0);
+    showNotification('Review posted successfully!');
+});
+</script>
+ <script src="index.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>
